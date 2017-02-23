@@ -34,18 +34,40 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener,LocationListener{
+
 
     private PdUiDispatcher dispatcher; //must declare this to use later, used to receive data from sendEvents
-
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
 
+    double latitude;
+    double longitude;
+
+    TextView accelX;
+    TextView accelY;
+    TextView accelZ;
+
+    TextView lati;
+    TextView longi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//Mandatory
         setContentView(R.layout.activity_main);//Mandatory
+
+        accelX = (TextView) findViewById(R.id.AccelXValue);
+        accelY = (TextView) findViewById(R.id.AccelYValue);
+        accelZ = (TextView) findViewById(R.id.AccelZValue);
+
+        lati = (TextView) findViewById(R.id.LatValue);
+        longi = (TextView) findViewById(R.id.LongValue);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        mSensorManager.registerListener(this,mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
 
         super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         //For declaring and initialising XML items, Always of form OBJECT_TYPE VARIABLE_NAME = (OBJECT_TYPE) findViewById(R.id.ID_SPECIFIED_IN_XML);
@@ -57,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
             finish(); // end program
         }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) { ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return; } LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1,this);
+
     }
 
 
@@ -64,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         PdAudio.startAudio(this);
-        //mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -72,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         PdAudio.stopAudio();
-       // mSensorManager.unregisterListener(this);
     }
 
     //METHOD TO SEND FLOAT TO PUREDATA PATCH
@@ -110,4 +137,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        Sensor mySensor =event.sensor; if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            sendFloatPD("accelX", x);
+            accelX.setText(String.valueOf(x));
+            sendFloatPD("accelY", y);
+            accelY.setText(String.valueOf(y));
+            sendFloatPD("accelZ", z);
+            accelZ.setText(String.valueOf(z)); }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        Log.i("MyLocation", Double.toString(latitude) + " " + Double.toString(longitude));
+        sendFloatPD("latitude",Float.parseFloat(Double.toString(latitude)));
+
+        lati.setText(String.valueOf(latitude)); sendFloatPD("longitude",Float.parseFloat(Double.toString(longitude)));
+        longi.setText(String.valueOf(longitude));
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

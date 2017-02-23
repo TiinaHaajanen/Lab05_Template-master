@@ -11,4 +11,94 @@
     tools:context="com.csis.lab05.MainActivity">
 
 
+    <TextView
+        android:text="AccelXText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="130dp"
+        android:id="@+id/AccelXText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="AccelYText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AccelXText"
+        android:layout_alignStart="@+id/AccelXText"
+        android:layout_marginTop="37dp"
+        android:id="@+id/AccelYText" />
+
+    <TextView
+        android:text="AccelZText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AccelYText"
+        android:layout_alignStart="@+id/AccelYText"
+        android:layout_marginTop="44dp"
+        android:id="@+id/AccelZText" />
+
+    <TextView
+        android:text="AccelXValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/AccelXText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="53dp"
+        android:id="@+id/AccelXValue" />
+
+    <TextView
+        android:text="AccelYValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/AccelYText"
+        android:layout_alignStart="@+id/AccelXValue"
+        android:id="@+id/AccelYValue" />
+
+    <TextView
+        android:text="AccelZValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/AccelZText"
+        android:layout_alignStart="@+id/AccelYValue"
+        android:id="@+id/AccelZValue" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/AccelXText"
+        android:layout_marginBottom="83dp"
+        android:id="@+id/LatText" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LatValue"
+        android:layout_alignStart="@+id/LatText"
+        android:layout_marginTop="15dp"
+        android:id="@+id/LongText" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LatValue"
+        android:layout_alignBaseline="@+id/LatText"
+        android:layout_alignBottom="@+id/LatText"
+        android:layout_alignEnd="@+id/AccelZValue"
+        android:layout_marginEnd="44dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LongValue"
+        android:layout_alignBaseline="@+id/LongText"
+        android:layout_alignBottom="@+id/LongText"
+        android:layout_alignStart="@+id/LatValue" />
+
 </RelativeLayout>
